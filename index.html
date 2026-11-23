@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Villa des Vergnes</title>
+  <meta name="description" content="">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=20261108c">
+</head>
+<body data-page="accueil">
+  <!-- L'en-tête (menu) et le pied de page sont construits par js/commun.js -->
+  <header class="entete" id="entete"></header>
+
+  <main>
+    <section class="accueil">
+      <img id="photo-accueil" class="accueil-photo" alt="" fetchpriority="high">
+      <div class="accueil-texte">
+        <p class="surtitre" data-t="accueil.surtitre"></p>
+        <h1 id="nom-maison"></h1>
+        <p data-t="accueil.sousTitre"></p>
+        <div class="boutons">
+          <a id="bouton-reserver" class="bouton" data-t="accueil.bouton"></a>
+          <a id="bouton-maison" class="bouton bouton-clair" data-t="accueil.boutonMaison"></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="conteneur">
+        <h2 data-t="accueil.titreAtouts"></h2>
+        <ul class="atouts" id="atouts"></ul>
+      </div>
+    </section>
+
+    <section class="section section-claire">
+      <div class="conteneur">
+        <h2 data-t="accueil.titrePhotos"></h2>
+        <div class="bandeau-photos" id="bandeau-photos"></div>
+        <a id="lien-photos" class="lien-fleche" data-t="accueil.voirPhotos"></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pied" id="pied"></footer>
+
+  <!-- 1. données  2. liste des photos  3. textes  4. code commun  5. code de cette page -->
+  <script src="config.js?v=20261108c"></script>
+  <script src="photos/liste-photos.js?v=20261108c"></script>
+  <script src="textes/fr.js?v=20261108c"></script>
+  <script src="textes/en.js?v=20261108c"></script>
+  <script src="textes/de.js?v=20261108c"></script>
+  <script src="textes/es.js?v=20261108c"></script>
+  <script src="textes/nl.js?v=20261108c"></script>
+  <script src="js/commun.js?v=20261108c"></script>
+  <script src="js/page-accueil.js?v=20261108c"></script>
+</body>
+</html>

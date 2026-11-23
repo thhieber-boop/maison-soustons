@@ -1,0 +1,375 @@
+/* ============================================================
+   STYLE DU SITE — écrit « mobile d'abord » :
+   les règles de base sont pour le téléphone, puis les blocs
+   @media (min-width: …) ajoutent les réglages pour les grands écrans.
+   ============================================================ */
+
+/* ---------- Couleurs et polices (à changer ici, partout d'un coup) ---------- */
+:root {
+  --pin: #2f4a3a;          /* vert pin des Landes */
+  --accent: #b4552d;       /* terre cuite, comme les tuiles et les couchers de soleil */
+  --sable: #f8efe0;        /* sable chaud */
+  --sable-fonce: #eadcc3;
+  --papier: #fdf8ef;       /* crème, à la place du blanc */
+  --panneau: rgba(253, 247, 236, .88);  /* panneau crème, laisse deviner le paysage */
+  --texte: #33291f;
+  --texte-doux: #6b5d4d;
+  --blanc: #ffffff;
+  /* couleurs du calendrier */
+  --dispo: #e3f1e6;   --dispo-bord: #8cc59a;
+  --demande: #fdf0d5; --demande-bord: #e0a93b;
+  --reserve: #ececec; --reserve-texte: #9a9a9a;
+  --choix: #2f6f8f;
+  --rayon: 14px;
+  --titre: "Fraunces", Georgia, serif;
+  --corps: "Inter", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: var(--corps);
+  color: var(--texte);
+  background: var(--pin);   /* couleur visible le temps que la photo de fond charge */
+  line-height: 1.6;
+}
+img { max-width: 100%; display: block; }
+h1, h2, h3 { font-family: var(--titre); font-weight: 600; line-height: 1.2; color: var(--pin); }
+h1 { font-size: clamp(2rem, 6vw, 3rem); margin: 0 0 1rem; }
+h2 { font-size: clamp(1.5rem, 4vw, 2.1rem); margin: 0 0 1rem; }
+h3 { font-size: 1.2rem; margin: 0 0 .75rem; }
+a { color: var(--accent); }
+button { font: inherit; }
+
+/* Photo de paysage fixe derrière toute la page */
+.fond-page { position: fixed; inset: 0; z-index: -1; background-size: cover; background-position: center; }
+
+/* Bandeau en haut de chaque page : une fenêtre ouverte sur le paysage, avec le titre */
+.bandeau-page {
+  min-height: 52vh; display: flex; align-items: flex-end;
+  padding: 84px 20px 28px;
+  background: linear-gradient(to top, rgba(30, 20, 10, .5), rgba(30, 20, 10, 0) 65%);
+}
+.bandeau-page h1 {
+  width: 100%; max-width: 1100px; margin: 0 auto;
+  color: var(--blanc); font-size: clamp(2.2rem, 6vw, 3.8rem);
+  text-shadow: 0 2px 16px rgba(0, 0, 0, .5);
+}
+[data-page="reserver"] .bandeau-page { min-height: 32vh; } /* le calendrier arrive plus vite */
+
+/* Le contenu est posé sur des panneaux crème, espacés pour laisser voir le paysage */
+.conteneur { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+.conteneur-etroit { max-width: 640px; }
+.section { padding: 7vh 12px; }
+.bandeau-page + .section { padding-top: 24px; }
+main > .section:last-child { padding-bottom: 12vh; }
+.section > .conteneur {
+  background: var(--panneau);
+  border-radius: var(--rayon);
+  padding: 28px 16px;
+  box-shadow: 0 6px 24px rgba(40, 25, 10, .22);
+}
+/* Maison, Autour, Tarifs : pas de grand panneau, chaque carte est posée sur le paysage */
+body .section-serree > .conteneur,
+body[data-page="autour"] .section > .conteneur,
+body[data-page="tarifs"] .section > .conteneur { background: none; box-shadow: none; padding: 0; }
+[data-page="autour"] .intro, [data-page="tarifs"] .intro {
+  background: var(--panneau); color: var(--texte);
+  padding: 14px 18px; border-radius: var(--rayon); max-width: none; margin: 0;
+}
+.centre { text-align: center; }
+.espace-haut { margin-top: 1.5rem; }
+.intro { font-size: 1.05rem; color: var(--texte-doux); max-width: 65ch; }
+.note { font-size: .85rem; color: var(--texte-doux); }
+
+/* ---------- Boutons ---------- */
+.bouton {
+  display: inline-block; cursor: pointer;
+  padding: .85rem 1.5rem; border-radius: 999px;
+  background: var(--accent); color: var(--blanc); border: 2px solid var(--accent);
+  text-decoration: none; font-weight: 600;
+  transition: transform .15s;
+}
+.bouton:hover { transform: translateY(-2px); }
+.bouton:disabled { opacity: .6; cursor: wait; transform: none; }
+.bouton-clair { background: rgba(255, 255, 255, .15); border-color: var(--blanc); }
+.bouton-contour-fonce { background: transparent; color: var(--accent); }
+.boutons { display: flex; flex-wrap: wrap; gap: 12px; }
+.lien-fleche {
+  display: inline-block; margin-top: 12px; padding: 0; cursor: pointer;
+  background: none; border: 0; color: var(--accent); font-weight: 600; text-decoration: none;
+}
+.lien-fleche::after { content: " →"; }
+
+/* ---------- En-tête et menu ---------- */
+.entete {
+  position: fixed; inset: 0 0 auto 0; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  height: 60px; padding: 0 16px;
+  background: rgba(253, 247, 236, .94);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .06);
+}
+.logo { font-family: var(--titre); font-size: 1.3rem; font-weight: 600; color: var(--pin); text-decoration: none; white-space: nowrap; }
+.entete-droite { display: flex; align-items: center; gap: 8px; }
+.choix-langue {
+  font-size: .85rem; color: var(--pin); cursor: pointer;
+  border: 1px solid var(--sable-fonce); border-radius: 999px;
+  padding: .35rem .6rem; background: var(--papier);
+}
+.menu-bouton { font-size: 1.6rem; background: none; border: 0; cursor: pointer; color: var(--pin); }
+
+/* Menu mobile : caché, il s'ouvre sous l'en-tête */
+.menu {
+  display: none;
+  position: absolute; top: 60px; left: 0; right: 0;
+  flex-direction: column;
+  background: var(--papier); padding: 8px 16px 16px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, .08);
+}
+.menu-ouvert .menu { display: flex; }
+.menu a { padding: 12px 0; color: var(--texte); text-decoration: none; font-weight: 500; border-bottom: 1px solid var(--sable); }
+.menu a.actif { color: var(--accent); font-weight: 600; }
+
+/* ---------- Pied de page ---------- */
+.pied { text-align: center; padding: 32px 16px; font-size: .9rem; color: var(--texte-doux); background: var(--sable); }
+.pied p { margin: .25rem 0; }
+
+/* ============================================================
+   ACCUEIL
+   ============================================================ */
+.accueil { position: relative; min-height: 100svh; display: flex; align-items: flex-end; color: var(--blanc); }
+.accueil-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.accueil::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, .65), rgba(0, 0, 0, 0) 60%);
+}
+.accueil-texte { position: relative; z-index: 1; padding: 0 16px 56px; max-width: 760px; }
+.accueil h1 { color: var(--blanc); font-size: clamp(2.4rem, 8vw, 4.2rem); margin: .2rem 0 .5rem; }
+.accueil p { font-size: 1.1rem; margin: 0 0 1.5rem; }
+.surtitre { text-transform: uppercase; letter-spacing: .15em; font-size: .8rem !important; margin: 0 !important; }
+
+.atouts { list-style: none; padding: 0; margin: 2rem 0 0; display: grid; gap: 16px; }
+.atouts li { background: var(--sable); border-radius: var(--rayon); padding: 24px; }
+.atouts h3 { margin: .5rem 0 .25rem; }
+.atouts p { margin: 0; color: var(--texte-doux); }
+.atout-icone { font-size: 2rem; }
+
+.bandeau-photos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.bandeau-photos img { aspect-ratio: 4 / 3; object-fit: cover; border-radius: 8px; cursor: zoom-in; width: 100%; }
+
+/* ============================================================
+   LA MAISON
+   ============================================================ */
+.chiffres { list-style: none; padding: 0; margin: 2rem 0 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.chiffres li { background: var(--sable); border-radius: var(--rayon); padding: 16px; text-align: center; }
+.chiffres li:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.chiffres strong { display: block; font-family: var(--titre); font-size: 1.6rem; color: var(--accent); }
+.chiffres span { font-size: .9rem; color: var(--texte-doux); }
+
+.piece {
+  background: var(--panneau); border-radius: var(--rayon);
+  padding: 20px 16px; margin-bottom: 7vh; display: grid; gap: 20px;
+  box-shadow: 0 6px 24px rgba(40, 25, 10, .22);
+}
+.piece:last-child { margin-bottom: 0; }
+.piece h2 { margin-bottom: .5rem; }
+.piece-niveau { margin: 0; font-size: .8rem; text-transform: uppercase; letter-spacing: .12em; color: var(--accent); font-weight: 600; }
+.piece-texte p { margin: 0 0 .5rem; }
+.piece-photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.piece-photos .vignette-principale { grid-column: 1 / -1; aspect-ratio: 16 / 10; }
+.piece-photos .vignette:nth-child(n+5) { display: none; } /* 4 photos max ici, les autres dans la visionneuse */
+
+.deux-colonnes { display: grid; gap: 16px; }
+.carte { border: 1px solid var(--sable-fonce); border-radius: var(--rayon); padding: 20px; background: var(--papier); }
+.liste-coches { list-style: none; padding: 0; margin: 0; }
+.liste-coches li { padding: 5px 0 5px 28px; position: relative; }
+.liste-coches li::before { content: "✓"; position: absolute; left: 4px; color: var(--accent); font-weight: 700; }
+
+/* Vignettes photo (maison et galerie) */
+.vignette {
+  padding: 0; border: 0; cursor: zoom-in; width: 100%;
+  aspect-ratio: 4 / 3; overflow: hidden; border-radius: 8px; background: var(--sable-fonce);
+}
+.vignette img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+.vignette:hover img { transform: scale(1.05); }
+
+/* ============================================================
+   PHOTOS
+   ============================================================ */
+.filtres { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 8px; }
+.filtre {
+  flex: none; padding: .5rem 1rem; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--sable-fonce); background: var(--papier);
+}
+.filtre.actif { background: var(--pin); color: var(--blanc); border-color: var(--pin); }
+.galerie-titre { margin: 2rem 0 .75rem; font-size: 1.4rem; }
+.galerie-titre span { font-family: var(--corps); font-size: .85rem; color: var(--texte-doux); font-weight: 400; }
+.galerie { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+
+/* ============================================================
+   AUTOUR DE SOUSTONS
+   ============================================================ */
+.lieux { display: grid; gap: 16px; margin-top: 2rem; }
+.lieu { border-radius: var(--rayon); overflow: hidden; background: var(--sable); display: flex; flex-direction: column; }
+.lieu-photo { padding: 0; border: 0; cursor: zoom-in; aspect-ratio: 16 / 10; overflow: hidden; }
+.lieu-photo img { width: 100%; height: 100%; object-fit: cover; }
+.lieu-texte { padding: 20px; }
+.lieu-texte h2 { font-size: 1.3rem; margin: .1rem 0 .4rem; }
+.lieu-texte p { margin: 0; }
+.lieu-distance { font-size: .8rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .08em; }
+.lieu-sans-photo { border-left: 5px solid var(--accent); }
+
+/* ============================================================
+   TARIFS
+   ============================================================ */
+.tarifs { display: grid; gap: 16px; margin: 2rem 0; }
+.tarif { border-radius: var(--rayon); padding: 24px; background: var(--sable); border-top: 5px solid var(--accent); }
+.tarif-tresHaute { border-top-color: var(--pin); }
+.tarif h3 { margin: 0; }
+.tarif-periode { color: var(--texte-doux); font-size: .9rem; margin: .4rem 0 1rem; }
+.tarif-prix { font-family: var(--titre); font-size: 2rem; margin: 0; color: var(--pin); }
+.tarif-prix span { font-family: var(--corps); font-size: .9rem; color: var(--texte-doux); }
+.tarif-we { margin: .25rem 0 0; font-weight: 500; font-size: .95rem; }
+.liste-services { list-style: none; padding: 0; margin: 0; }
+.liste-services li { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--sable); }
+.liste-services small { display: block; color: var(--texte-doux); }
+
+/* ============================================================
+   RÉSERVER : calendrier
+   ============================================================ */
+.bandeau-essai { background: var(--demande); border: 1px solid var(--demande-bord); border-radius: 8px; padding: 10px 14px; font-size: .9rem; }
+.reservation { display: grid; gap: 24px; margin-top: 1.5rem; }
+.reservation > * { min-width: 0; } /* empêche la bande des mois d'élargir la page */
+
+.legende-calendrier { list-style: none; padding: 0; margin: 0 0 12px; display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: .85rem; }
+.legende-calendrier li { display: flex; align-items: center; gap: 6px; }
+.pastille { width: 16px; height: 16px; border-radius: 4px; display: inline-block; border: 2px solid; }
+
+.mois-choix { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; }
+.mois-choix button {
+  flex: none; padding: .3rem .7rem; border-radius: 999px; cursor: pointer; font-size: .85rem;
+  border: 1px solid var(--sable-fonce); background: var(--papier); text-transform: capitalize;
+}
+.mois-choix button.actif { background: var(--pin); color: var(--blanc); border-color: var(--pin); }
+.mois-nav { display: flex; align-items: center; justify-content: space-between; margin: 12px 0; }
+.mois-nav h2 { margin: 0; font-size: 1.4rem; text-transform: capitalize; }
+.fleche { font-size: 1.8rem; line-height: 1; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--sable-fonce); background: var(--papier); cursor: pointer; color: var(--pin); }
+.fleche:disabled { opacity: .3; cursor: default; }
+
+.jours-entete, .jours { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; }
+.jours-entete { font-size: .75rem; color: var(--texte-doux); text-transform: capitalize; padding: 0 8px 4px; }
+
+.semaine { margin-bottom: 8px; }
+.semaine-bande {
+  width: 100%; display: block; text-align: left; cursor: pointer;
+  border: 2px solid; border-radius: 10px; padding: 8px 6px 6px;
+  transition: transform .1s;
+}
+.semaine-bande:not(:disabled):hover { transform: translateY(-1px); }
+.semaine-bande:disabled { cursor: not-allowed; }
+.semaine-haut { display: flex; justify-content: space-between; align-items: baseline; padding: 0 4px; }
+.semaine-dates { font-size: .85rem; }
+.semaine-prix { font-family: var(--titre); font-size: 1.15rem; }
+.semaine-etat { display: block; padding: 0 4px; font-size: .75rem; font-weight: 600; min-height: 1.2em; }
+.jours span { padding: 4px 0; font-size: .85rem; border-radius: 6px; margin: 2px 1px 0; }
+.jours .autre-mois { opacity: .45; }
+.jours .nuit-choisie { background: rgba(255, 255, 255, .25); }
+
+/* Couleurs par statut */
+.pastille.etat-disponible, .semaine.etat-disponible .semaine-bande, .we.etat-disponible { background: var(--dispo); border-color: var(--dispo-bord); color: var(--texte); }
+.pastille.etat-demande, .semaine.etat-demande .semaine-bande, .we.etat-demande { background: var(--demande); border-color: var(--demande-bord); color: var(--texte); }
+.pastille.etat-reserve, .semaine.etat-reserve .semaine-bande, .we.etat-reserve,
+.semaine.etat-passe .semaine-bande, .we.etat-passe { background: var(--reserve); border-color: var(--reserve); color: var(--reserve-texte); }
+.pastille.etat-selection, .semaine.etat-selection .semaine-bande, .we.etat-selection { background: var(--choix); border-color: var(--choix); color: var(--blanc); }
+.semaine.etat-reserve .semaine-prix, .semaine.etat-passe .semaine-prix, .we.etat-reserve strong { text-decoration: line-through; }
+.semaine.etat-disponible .semaine-etat { color: #2f7a44; }
+.semaine.etat-demande .semaine-etat, .we.etat-demande em { color: #9a6a0c; }
+
+.we {
+  margin: 4px 0 0 auto; width: 75%; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 8px;
+  border: 2px solid; border-radius: 8px; padding: 4px 10px; font-size: .8rem; cursor: pointer; text-align: left;
+}
+.we:disabled { cursor: not-allowed; }
+.we em { font-style: normal; font-weight: 600; width: 100%; }
+
+/* ---------- Récapitulatif et formulaire ---------- */
+.recap { background: var(--sable); border-radius: var(--rayon); padding: 20px; align-self: start; }
+.recap h2 { font-size: 1.4rem; }
+.recap-vide { color: var(--texte-doux); }
+.recap-dates { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0; }
+.recap-dates dt { font-size: .8rem; color: var(--texte-doux); }
+.recap-dates dd { margin: 0; font-weight: 600; }
+.recap-nuits { margin: .5rem 0; font-size: .9rem; color: var(--texte-doux); }
+.recap-lignes { list-style: none; padding: 0; margin: 0; }
+.recap-lignes li { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--sable-fonce); font-size: .95rem; }
+.recap-total { font-weight: 700; font-size: 1.1rem !important; border-bottom: 0 !important; }
+
+.formulaire { display: grid; gap: 12px; margin-top: 16px; }
+.formulaire[hidden] { display: none; }
+.formulaire h3 { margin: 8px 0 0; }
+.formulaire label { display: grid; gap: 4px; font-size: .9rem; font-weight: 500; }
+.formulaire input, .formulaire textarea {
+  font: inherit; padding: .65rem .8rem; border-radius: 8px;
+  border: 1px solid var(--sable-fonce); background: var(--papier);
+}
+.formulaire input:focus, .formulaire textarea:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+#options-services { display: grid; gap: 12px; }
+.deux-champs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.piege { position: absolute; left: -9999px; }
+.erreur { background: #fbe4e2; color: #8a2a20; border-radius: 8px; padding: 10px 14px; margin: 0; }
+.merci { background: var(--dispo); border: 1px solid var(--dispo-bord); border-radius: var(--rayon); padding: 16px 20px; margin-top: 16px; }
+.merci h3 { margin-top: 0; }
+
+/* ============================================================
+   VISIONNEUSE PLEIN ÉCRAN
+   ============================================================ */
+.visionneuse { position: fixed; inset: 0; z-index: 100; background: rgba(0, 0, 0, .96); display: flex; align-items: center; justify-content: center; }
+.visionneuse[hidden] { display: none; }
+.visionneuse figure { margin: 0; max-width: 100%; }
+.visionneuse img { max-height: 82svh; max-width: 100vw; margin: 0 auto; }
+.visionneuse figcaption { color: #ddd; text-align: center; padding: 12px; }
+.vis-compteur { color: #999; font-size: .85rem; margin-left: 8px; }
+.visionneuse button { position: absolute; background: none; border: 0; color: var(--blanc); font-size: 2.6rem; cursor: pointer; padding: 8px 16px; }
+.visionneuse-fermer { top: 8px; right: 8px; font-size: 1.8rem !important; }
+.visionneuse-prec { left: 0; }
+.visionneuse-suiv { right: 0; }
+
+/* ============================================================
+   Tablette (700 px et plus)
+   ============================================================ */
+@media (min-width: 700px) {
+  .atouts { grid-template-columns: repeat(2, 1fr); }
+  .bandeau-photos { grid-template-columns: repeat(3, 1fr); }
+  .chiffres { grid-template-columns: repeat(5, 1fr); }
+  .chiffres li:last-child:nth-child(odd) { grid-column: auto; }
+  .deux-colonnes { grid-template-columns: 1fr 1fr; }
+  .galerie { grid-template-columns: repeat(3, 1fr); }
+  .tarifs { grid-template-columns: repeat(2, 1fr); }
+  .lieux { grid-template-columns: repeat(2, 1fr); }
+  .piece { grid-template-columns: 1fr 1.6fr; align-items: start; gap: 32px; }
+  .accueil-texte { padding: 0 48px 80px; }
+  .section > .conteneur { padding: 36px 40px; }
+  .piece { padding: 28px 32px; }
+}
+
+/* ============================================================
+   Ordinateur (1100 px et plus) : menu visible en entier
+   ============================================================ */
+@media (min-width: 1100px) {
+  .menu-bouton { display: none; }
+  .menu {
+    display: flex; position: static; flex-direction: row; align-items: center; gap: 22px;
+    background: none; box-shadow: none; padding: 0; margin-left: auto;
+  }
+  .menu a { border: 0; padding: 0; font-size: .95rem; }
+  .menu a.bouton-petit { padding: .45rem 1.1rem; border-radius: 999px; background: var(--accent); color: var(--blanc); }
+  .entete { padding: 0 32px; }
+  .atouts { grid-template-columns: repeat(4, 1fr); }
+  .galerie { grid-template-columns: repeat(4, 1fr); }
+  .tarifs { grid-template-columns: repeat(4, 1fr); }
+  .lieux { grid-template-columns: repeat(3, 1fr); }
+  .reservation { grid-template-columns: 1.5fr 1fr; align-items: start; }
+  .recap { position: sticky; top: 80px; }
+  .visionneuse button { font-size: 3.5rem; padding: 16px 28px; }
+}

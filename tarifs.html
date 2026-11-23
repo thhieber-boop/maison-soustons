@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Villa des Vergnes</title>
+  <meta name="description" content="">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=20261108c">
+</head>
+<body data-page="tarifs">
+  <!-- L'en-tête (menu) et le pied de page sont construits par js/commun.js -->
+  <header class="entete" id="entete"></header>
+
+  <main>
+    <div class="bandeau-page">
+      <h1 data-t="tarifs.titre"></h1>
+    </div>
+
+    <section class="section en-tete-page">
+      <div class="conteneur">
+        <p class="intro" data-t="tarifs.intro"></p>
+        <div class="tarifs" id="grille-tarifs"></div>
+
+        <div class="deux-colonnes">
+          <div class="carte">
+            <h3 data-t="tarifs.titreServices"></h3>
+            <ul class="liste-services" id="liste-services"></ul>
+          </div>
+          <div class="carte">
+            <h3 data-t="tarifs.titreConditions"></h3>
+            <ul class="liste-coches" id="liste-conditions"></ul>
+          </div>
+        </div>
+        <p class="centre espace-haut"><a id="bouton-reserver" class="bouton" data-t="tarifs.bouton"></a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pied" id="pied"></footer>
+
+  <!-- 1. données  2. liste des photos  3. textes  4. code commun  5. code de cette page -->
+  <script src="config.js?v=20261108c"></script>
+  <script src="photos/liste-photos.js?v=20261108c"></script>
+  <script src="textes/fr.js?v=20261108c"></script>
+  <script src="textes/en.js?v=20261108c"></script>
+  <script src="textes/de.js?v=20261108c"></script>
+  <script src="textes/es.js?v=20261108c"></script>
+  <script src="textes/nl.js?v=20261108c"></script>
+  <script src="js/commun.js?v=20261108c"></script>
+  <script src="js/page-tarifs.js?v=20261108c"></script>
+</body>
+</html>
